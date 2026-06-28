@@ -1,5 +1,6 @@
-const API_BASE = "http://127.0.0.1:8000/api";
-
+const API_BASE = "https://newspulse-ai-zs15.onrender.com";
+// Wake up Render backend on page load
+fetch(`${API_BASE}/`).catch(() => {});
 async function apiRequest(path, { method = "GET", body, auth = false } = {}) {
   const headers = { "Content-Type": "application/json" };
   if (auth) {
