@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign up — NewsPulse AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script src="js/theme.js"></script>
+</head>
+<body>
+<div class="auth-page">
+
+  <div class="auth-visual">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="visual-content">
+      <div class="brand brand-on-dark">
+        <span class="pulse-mark"><span></span><span></span><span></span><span></span></span>
+        NewsPulse AI
+      </div>
+      <h1>Join NewsPulse AI and let your feed learn what matters to you</h1>
+      <ul class="visual-points">
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" opacity="0.25"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg> Set up in under a minute</li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" opacity="0.25"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg> Tech &amp; AI, World, or both</li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" opacity="0.25"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg> Gets smarter the more you read</li>
+      </ul>
+      <div class="visual-badge">⚡ AI-Powered</div>
+    </div>
+  </div>
+
+  <div class="auth-form-side">
+    <div class="auth-card">
+      <div class="brand">
+        <span class="pulse-mark"><span></span><span></span><span></span><span></span></span>
+        NewsPulse AI
+      </div>
+      <p class="subtitle">Create your account to get a personalized feed.</p>
+
+      <form id="signup-form" novalidate>
+        <div class="field" id="signup-name-field">
+          <label for="signup-name">Full name</label>
+          <input type="text" id="signup-name" required placeholder="Your name">
+          <p class="error-text"></p>
+        </div>
+        <div class="field" id="signup-email-field">
+          <label for="signup-email">Email</label>
+          <input type="email" id="signup-email" required placeholder="you@example.com">
+          <p class="error-text"></p>
+        </div>
+        <div class="field" id="signup-password-field">
+          <label for="signup-password">Password</label>
+          <div class="password-wrapper">
+            <input type="password" id="signup-password" required placeholder="At least 8 characters">
+            <button type="button" class="toggle-password" data-target="signup-password" aria-label="Show password"></button>
+          </div>
+          <p class="error-text"></p>
+        </div>
+        <button type="submit" class="btn-primary" id="signup-submit" style="margin-top: 6px;">
+          <span class="spinner"></span>
+          <span class="btn-label">Create account</span>
+        </button>
+      </form>
+
+      <p class="auth-foot">Already have an account? <a href="login.html">Log in</a></p>
+
+      <div class="or-divider"><span>or</span></div>
+      <div id="google-signin-btn"></div>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="js/api.js"></script>
+<script src="js/toast.js"></script>
+<script src="js/auth.js"></script>
+<script>
+  // Replace with your own Google OAuth Client ID from Google Cloud Console
+  const GOOGLE_CLIENT_ID = "1081839753162-t0g0otvckdrg3ln2h4o12jqkgea0hcvq.apps.googleusercontent.com";
+
+  window.onload = function () {
+    google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: handleGoogleSignIn });
+    google.accounts.id.renderButton(document.getElementById("google-signin-btn"), {
+      theme: "filled_black", size: "large", shape: "pill", text: "continue_with", width: 280,
+    });
+  };
+</script>
+</body>
+</html>

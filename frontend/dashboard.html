@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — NewsPulse AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script src="js/theme.js"></script>
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="pulse-mark"><span></span><span></span><span></span><span></span></span>
+      NewsPulse AI
+    </div>
+
+    <nav>
+      <div class="nav-item active" data-tab="foryou">For you</div>
+      <div class="nav-item" data-tab="tech">Tech &amp; AI</div>
+      <div class="nav-item" data-tab="world">World</div>
+      <div class="nav-item" data-tab="trending">Trending</div>
+    </nav>
+
+    <div class="sidebar-foot">
+      <button class="btn-logout" onclick="logout()">Log out</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="main-header">
+      <h2 class="greeting" id="greeting">Good to see you</h2>
+      <span class="date" id="today-date"></span>
+    </div>
+
+    <div class="article-grid" id="article-grid"></div>
+  </main>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/toast.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>
