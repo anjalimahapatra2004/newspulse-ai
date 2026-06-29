@@ -14,10 +14,11 @@ app = FastAPI(title="NewsPulse AI", version="1.0.0")
 # Allow the frontend (served separately as static HTML/CSS/JS) to call this API
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # tighten this to your actual frontend URL before deploying
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["*"],
 )
 
 
