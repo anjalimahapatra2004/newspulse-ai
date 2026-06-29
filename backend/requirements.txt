@@ -6,7 +6,8 @@ pydantic==2.7.4
 pydantic-settings==2.3.4
 pydantic-core==2.18.4
 python-jose[cryptography]==3.3.0
-passlib[bcrypt]==1.7.4
+passlib==1.7.4
+bcrypt==4.0.1
 python-multipart==0.0.9
 fastapi-mail==1.4.1
 sentence-transformers==2.7.0
