@@ -1,0 +1,54 @@
+name: Daily Digest
+
+on:
+  schedule:
+    # Runs every hour; the guard step below only lets it proceed once,
+    # in the 6:00-6:59 AM IST window. This is more reliable on GitHub's
+    # free tier than a single once-a-day cron, which can get silently
+    # skipped on low-activity repos.
+    - cron: '0 * * * *'
+  workflow_dispatch: {}
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if it's time to run (6 AM IST)
+        id: time_check
+        run: |
+          HOUR_IST=$(TZ="Asia/Kolkata" date +%H)
+          echo "Current IST hour: $HOUR_IST"
+          if [ "$HOUR_IST" = "06" ]; then
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "should_run=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v3
+        if: steps.time_check.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
+
+      - uses: actions/setup-python@v4
+        if: steps.time_check.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        if: steps.time_check.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
+        run: |
+          cd backend
+          pip install -r requirements.txt
+
+      - name: Send digest emails
+        if: steps.time_check.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
+        run: |
+          cd backend
+          python -m scripts.send_digest
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          MONGO_DB_NAME: ${{ secrets.MONGO_DB_NAME }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+          MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+          MAIL_FROM: ${{ secrets.MAIL_FROM }}
+          MAIL_PORT: ${{ secrets.MAIL_PORT }}
+          MAIL_SERVER: ${{ secrets.MAIL_SERVER }}
