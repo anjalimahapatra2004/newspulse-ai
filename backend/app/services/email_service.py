@@ -1,3 +1,4 @@
+import asyncio
 from fastapi_mail import FastMail, MessageSchema, ConnectionConfig, MessageType
 from app.config import settings
 from app.exceptions import EmailDeliveryError
@@ -18,13 +19,29 @@ conf = ConnectionConfig(
 )
 
 
-async def _send(message: MessageSchema, context: str):
-    try:
-        await FastMail(conf).send_message(message)
-        logger.info("Email sent (%s) to %s", context, message.recipients)
-    except Exception:
-        logger.error("Email send failed (%s) to %s", context, message.recipients, exc_info=True)
-        raise EmailDeliveryError()
+async def _send(message: MessageSchema, context: str, retries: int = 1):
+    """
+    Sends an email, retrying once after a short delay before giving up.
+    This absorbs transient failures - e.g. a cold-started Render instance
+    competing for resources right as the SMTP connection is attempted.
+    """
+    last_error = None
+    for attempt in range(retries + 1):
+        try:
+            await FastMail(conf).send_message(message)
+            logger.info("Email sent (%s) to %s", context, message.recipients)
+            return
+        except Exception as exc:
+            last_error = exc
+            if attempt < retries:
+                logger.warning(
+                    "Email send attempt %s/%s failed (%s) to %s - retrying",
+                    attempt + 1, retries + 1, context, message.recipients,
+                )
+                await asyncio.sleep(2)
+
+    logger.error("Email send failed after retries (%s) to %s", context, message.recipients, exc_info=last_error)
+    raise EmailDeliveryError()
 
 
 async def send_welcome_email(to_email: str, name: str):
